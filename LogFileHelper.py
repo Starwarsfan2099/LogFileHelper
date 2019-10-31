@@ -20,6 +20,13 @@ class ParseLogFile:
         self.logfile = open(fileName, "r")
         self.lineCount = sum(1 for line in self.logfile)
 
+    def printDictionary(self, dictionary):
+        # This method simply prints a dictionary.
+        # Arguments:
+        #   dictionary      DICTIONARY  A dictionary to print.
+        for key in dictionary:
+            print str(key) + " : " + str(dictionary[key])
+
     def countOccurrencesByLine(self, string):
         # This method counts the number of lines in which a string occurs at least once.
         # Arguments:
@@ -154,7 +161,7 @@ class ParseLogFile:
         if self.verbose is True: print "Column %d values sorted: " % column + str(values)
         return values
 
-    def getColumnUniqueValuesAmount(self, column, largestFirst=False):
+    def getColumnUniqueValuesAmountAdded(self, column, largestFirst=False):
         # This method adds all of the total values in a certain column of a line for each unique occurrence of a column item.
         # Arguments:
         #   column          INT         Column number in the line.
@@ -184,4 +191,37 @@ class ParseLogFile:
             sortedList = sorted(values.items(), key=operator.itemgetter(1))
         sortedValues = collections.OrderedDict(sortedList)
         if self.verbose is True: print "Column %d added for lines with unique column %d value: " % (column, column) + str(sortedValues)
+        return sortedValues
+
+    def getColumnUniqueValuesCounted(self, column, string, uniqueColumn, largestFirst=False):
+        # This method gets the amount for each unique item ina column line by another column line.
+        # Arguments:
+        #   column          INT         Column number in the line to look for string.
+        #   string          STRING      String to match for in the column.
+        #   uniqueColumn    INT         Unique column to get occurrences of.
+        #   largestFirst    BOOL        Returns values sorted from greatest to smallest if True.
+        # Returns:
+        #   sortedValue     DICTIONARY  The sorted dictionary of values.
+        self.logfile.seek(0)
+        values = {}
+        counter = 0
+        s = ""
+        for line in self.logfile:
+            line = line.split()
+            counter += 1
+            try:
+                if string in line[column]:
+                    if line[uniqueColumn] in values:
+                        values[line[uniqueColumn]] += 1
+                    else:
+                        values[line[uniqueColumn]] = 1
+            except IndexError as e:
+                print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
+                exit()
+        if largestFirst is True:
+            sortedList = sorted(values.items(), key=operator.itemgetter(1), reverse=largestFirst)
+        else:
+            sortedList = sorted(values.items(), key=operator.itemgetter(1))
+        sortedValues = collections.OrderedDict(sortedList)
+        if self.verbose is True: print "In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(sortedValues)
         return sortedValues

@@ -25,6 +25,6 @@ assert logfile.addByColumnWithString(4, "the") == 4936
 
 assert logfile.addByColumnWithUniqueColumn(4, 0, largestFirst=True)['the'] == 4924
 
-
+assert logfile.getColumnUniqueValuesCounted(0, "and", 1, largestFirst=True)['repeating'] == 2
 
 print "Success"
