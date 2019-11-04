@@ -27,6 +27,20 @@ class ParseLogFile:
         for key in dictionary:
             print str(key) + " : " + str(dictionary[key])
 
+    def getLargestItemInDictionary(self, dictionary):
+        # This method finds the larget item in the dictionary and returns that key.
+        # Arguments:
+        #   dictionary      DICTIONARY  A dictionary.
+        # Returns:
+        #   key             STRING      Key of the largest item in the dictionary.
+        largest = 0
+        largestKey = ""
+        for key in dictionary:
+            if int(dictionary[key]) > largest:
+                largest = int(dictionary[key])
+                largestKey = key
+        return largestKey
+
     def countOccurrencesByLine(self, string):
         # This method counts the number of lines in which a string occurs at least once.
         # Arguments:
@@ -147,7 +161,7 @@ class ParseLogFile:
         for line in self.logfile:
             line = line.split()
             try:
-                nextValue = int(line[column])
+                nextValue = line[column]
                 counter += 1
             except IndexError as e:
                 print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
@@ -194,7 +208,7 @@ class ParseLogFile:
         return sortedValues
 
     def getColumnUniqueValuesCounted(self, column, string, uniqueColumn, largestFirst=False):
-        # This method gets the amount for each unique item ina column line by another column line.
+        # This method gets the amount for each unique item in a column line by another column line.
         # Arguments:
         #   column          INT         Column number in the line to look for string.
         #   string          STRING      String to match for in the column.
