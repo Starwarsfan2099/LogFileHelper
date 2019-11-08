@@ -41,6 +41,20 @@ class ParseLogFile:
                 largestKey = key
         return largestKey
 
+    def getMostItemsForKeyInDictionary(self, dictionary):
+        # This method returns the key in the dictionary that has the most items in its list
+        # Arguments:
+        #   dictionary      DICTIONARY  A dictionary
+        # Returns:
+        #   key            STRING       Key with the most items
+        largest = 0
+        largestKey = ""
+        for key in dictionary:
+            if len(dictionary[key]) > largest:
+                largest = len(dictionary[key])
+                largestKey = key
+        return largestKey
+
     def countOccurrencesByLine(self, string):
         # This method counts the number of lines in which a string occurs at least once.
         # Arguments:
@@ -53,6 +67,24 @@ class ParseLogFile:
             if string in line:
                 counter += 1
         if self.verbose is True: print "Number of lines with \'%s\': %d" % (string, counter)
+        return counter
+
+    def countOccurrencesByLineIfColumn(self, string, column, matchString):
+        # This method counts the number of lines in which a string occurs at least once.
+        # Arguments:
+        #   string:         STRING      String to count occurrences of.
+        #   column          INT         Column to look for matchString.
+        #   matchString     STRING      String to match in column.
+        # Returns:
+        #   counter         INT         The total number of lines where the string was found.
+        self.logfile.seek(0)
+        counter = 0
+        for line in self.logfile:
+            if string in line:
+                line = line.split()
+                if matchString in line[column]:
+                    counter += 1
+        if self.verbose is True: print "Number of lines with \'%s\' that also have \'%s\' in column %d: %d" % (string, matchString, column, counter)
         return counter
 
     def countOccurrences(self, string):
@@ -208,7 +240,7 @@ class ParseLogFile:
         return sortedValues
 
     def getColumnUniqueValuesCounted(self, column, string, uniqueColumn, largestFirst=False):
-        # This method gets the amount for each unique item in a column line by another column line.
+        # This method counts the unique occurrences in one uniqueColumn if string matches another column in the line.
         # Arguments:
         #   column          INT         Column number in the line to look for string.
         #   string          STRING      String to match for in the column.
@@ -239,3 +271,31 @@ class ParseLogFile:
         sortedValues = collections.OrderedDict(sortedList)
         if self.verbose is True: print "In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(sortedValues)
         return sortedValues
+
+    def getColumnUniqueValuesByColumn(self, column, uniqueColumn):
+        # This method gets the  unique items in a column by another column.
+        # Arguments:
+        #   column          INT         Column number in the line to sort unique items by.
+        #   uniqueColumn    INT         Unique column to get occurrences of.
+        # Returns:
+        #   values     DICTIONARY  The sorted dictionary of values.
+        self.logfile.seek(0)
+        values = {}
+        counter = 0
+        s = ""
+        for line in self.logfile:
+            line = line.split()
+            counter += 1
+            try:
+                if line[column] in values:
+                    if line[uniqueColumn] not in values[line[column]]:
+                        values[line[column]].append(line[uniqueColumn])
+                    else:
+                        pass
+                else:
+                    values[line[column]] = [line[uniqueColumn]]
+            except IndexError as e:
+                print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
+                exit()
+        # if self.verbose is True: print "In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(values)
+        return values
