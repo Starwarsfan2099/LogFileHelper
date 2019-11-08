@@ -16,3 +16,12 @@ print "Unique IP addresses: %s" % count
 ip = logfile.getColumnUniqueValuesCounted(5, "[error]", 7, largestFirst=True)
 mostErrors = logfile.getLargestItemInDictionary(ip)
 print "IP with most errors: %s" % mostErrors.strip("]")
+
+# Question 4
+stuff = logfile.getColumnUniqueValuesByColumn(7, -1)
+mostUniqueFiles = logfile.getMostItemsForKeyInDictionary(stuff).strip("]")
+print "IP with most unique requested files: %s" % mostUniqueFiles
+
+# Not working TODO: Fix
+count = logfile.countOccurrencesByLineIfColumn("File does not exist", 7, mostUniqueFiles)
+print count
