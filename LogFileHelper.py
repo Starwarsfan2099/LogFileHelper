@@ -70,7 +70,7 @@ class ParseLogFile:
         return counter
 
     def countOccurrencesByLineIfColumn(self, string, column, matchString):
-        # This method counts the number of lines in which a string occurs at least once.
+        # This method counts the number of occurrences in which a string occurs if matchString is found in column.
         # Arguments:
         #   string:         STRING      String to count occurrences of.
         #   column          INT         Column to look for matchString.
@@ -85,6 +85,27 @@ class ParseLogFile:
                 if matchString in line[column]:
                     counter += 1
         if self.verbose is True: print "Number of lines with \'%s\' that also have \'%s\' in column %d: %d" % (string, matchString, column, counter)
+        return counter
+
+    def countUniqueOccurrencesByLineIfColumn(self, string, column, matchString, uniqueColumn):
+        # This method counts the number of unique occurrences in uniqueColumn, in a line that string occurs in and if matchString is in column.
+        # Arguments:
+        #   string:         STRING      String to count occurrences of.
+        #   column          INT         Column to look for matchString.
+        #   matchString     STRING      String to match in column.
+        #   uniqueColumn    INT         Column to count unique items in.
+        # Returns:
+        #   counter         INT         The total number of lines where the string was found.
+        self.logfile.seek(0)
+        values = []
+        for line in self.logfile:
+            if string in line:
+                line = line.split()
+                if matchString in line[column]:
+                    if line[uniqueColumn] not in values:
+                        values.append(line[uniqueColumn])
+        counter = len(values) + 1
+        if self.verbose is True: print "Number of unique items in column %d in a line that includes \'%s\', that also have \'%s\' in column %d: %d" % (uniqueColumn, string, matchString, column, counter)
         return counter
 
     def countOccurrences(self, string):
