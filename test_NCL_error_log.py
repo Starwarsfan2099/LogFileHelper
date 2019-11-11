@@ -16,7 +16,7 @@ print "2: Unique IP addresses: %s" % count
 assert count == 8121
 
 # Question 3
-ip = logfile.getColumnUniqueValuesCounted(5, "[error]", 7, largestFirst=True)
+ip = logfile.getColumnUniqueValuesCounted(5, "[error]", 7)
 mostErrors = logfile.getLargestItemInDictionary(ip).strip("]")
 print "3: IP with most errors: %s" % mostErrors
 assert mostErrors == "88.80.10.1"
