@@ -27,7 +27,7 @@ class ParseLogFile:
             print str(key) + " : " + str(dictionary[key])
 
     def getLargestItemInDictionary(self, dictionary):
-        # This method finds the larget item in the dictionary and returns that key.
+        # This method finds the largest item in the dictionary and returns that key.
         # Arguments:
         #   dictionary      DICTIONARY  A dictionary.
         # Returns:
@@ -38,6 +38,7 @@ class ParseLogFile:
             if int(dictionary[key]) > largest:
                 largest = int(dictionary[key])
                 largestKey = key
+        if self.verbose is True: print "[DEBUG] Largest item in Dictionary: %s, %s" % (largestKey, dictionary[largestKey])
         return largestKey
 
     def getMostItemsForKeyInDictionary(self, dictionary):
@@ -52,6 +53,7 @@ class ParseLogFile:
             if len(dictionary[key]) > largest:
                 largest = len(dictionary[key])
                 largestKey = key
+        if self.verbose is True: print "[DEBUG] Largest list in Dictionary: %s, [%s] %s" % (largestKey, len(dictionary[largestKey])+1, dictionary[largestKey])
         return largestKey
 
     def countOccurrencesByLine(self, string):
@@ -65,7 +67,7 @@ class ParseLogFile:
         for line in self.logfile:
             if string in line:
                 counter += 1
-        if self.verbose is True: print "Number of lines with \'%s\': %d" % (string, counter)
+        if self.verbose is True: print "[DEBUG] Number of lines with \'%s\': %d" % (string, counter)
         return counter
 
     def countOccurrencesByLineIfColumn(self, string, column, matchString):
@@ -83,7 +85,7 @@ class ParseLogFile:
                 line = line.split()
                 if matchString in line[column]:
                     counter += 1
-        if self.verbose is True: print "Number of lines with \'%s\' that also have \'%s\' in column %d: %d" % (string, matchString, column, counter)
+        if self.verbose is True: print "[DEBUG] Number of lines with \'%s\' that also have \'%s\' in column %d: %d" % (string, matchString, column, counter)
         return counter
 
     def countUniqueOccurrencesByLineIfColumn(self, string, column, matchString, uniqueColumn):
@@ -104,7 +106,7 @@ class ParseLogFile:
                     if line[uniqueColumn] not in values:
                         values.append(line[uniqueColumn])
         counter = len(values) + 1
-        if self.verbose is True: print "Number of unique items in column %d in a line that includes \'%s\', that also have \'%s\' in column %d: %d" % (uniqueColumn, string, matchString, column, counter)
+        if self.verbose is True: print "[DEBUG] Number of unique items in column %d in a line that includes \'%s\', that also have \'%s\' in column %d: %d" % (uniqueColumn, string, matchString, column, counter)
         return counter
 
     def countOccurrences(self, string):
@@ -118,7 +120,7 @@ class ParseLogFile:
         for line in self.logfile:
             count = sum(1 for _ in re.finditer(r'\b%s\b' % re.escape(string), line))
             counter += count
-        if self.verbose is True: print "Number of occurrences of \'%s\': %d" % (string, counter)
+        if self.verbose is True: print "[DEBUG] Number of occurrences of \'%s\': %d" % (string, counter)
         return counter
 
     def addByColumn(self, column):
@@ -139,7 +141,7 @@ class ParseLogFile:
             except IndexError as e:
                 print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
                 exit()
-        if self.verbose is True: print "Column %d added is: %d (%d occurrences added)" % (column, adder, counter)
+        if self.verbose is True: print "[DEBUG] Column %d added is: %d (%d occurrences added)" % (column, adder, counter)
         return adder
 
     def addByColumnWithString(self, column, string):
@@ -164,7 +166,7 @@ class ParseLogFile:
                 except IndexError as e:
                     print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
                     exit()
-        if self.verbose is True: print "Column %d added for lines with \'%s\': %d (%d occurrences added)" % (column, string, adder, occurrences)
+        if self.verbose is True: print "[DEBUG] Column %d added for lines with \'%s\': %d (%d occurrences added)" % (column, string, adder, occurrences)
         return adder
 
     def addByColumnWithUniqueColumn(self, column, uniqueColumn, largestFirst=False):
@@ -195,7 +197,7 @@ class ParseLogFile:
         else:
             sortedList = sorted(values.items(), key=operator.itemgetter(1))
         sortedValues = collections.OrderedDict(sortedList)
-        if self.verbose is True: print "Column %d added for lines with unique column %d value: " % (column, uniqueColumn) + str(sortedValues)
+        if self.verbose is True: print "[DEBUG] Column %d added for lines with unique column %d value: " % (column, uniqueColumn) + str(sortedValues)
         return sortedValues
 
     def getColumnUniqueValuesSorted(self, column, largestFirst=False):
@@ -224,7 +226,7 @@ class ParseLogFile:
             values.sort(reverse=True)
         else:
             values.sort()
-        if self.verbose is True: print "Column %d values sorted: " % column + str(values)
+        if self.verbose is True: print "[DEBUG] Column %d values sorted: " % column + str(values)
         return values
 
     def getColumnUniqueValuesAmountAdded(self, column, largestFirst=False):
@@ -256,7 +258,7 @@ class ParseLogFile:
         else:
             sortedList = sorted(values.items(), key=operator.itemgetter(1))
         sortedValues = collections.OrderedDict(sortedList)
-        if self.verbose is True: print "Column %d added for lines with unique column %d value: " % (column, column) + str(sortedValues)
+        if self.verbose is True: print "[DEBUG] Column %d added for lines with unique column %d value: " % (column, column) + str(sortedValues)
         return sortedValues
 
     def getColumnUniqueValuesCounted(self, column, string, uniqueColumn, largestFirst=False):
@@ -289,7 +291,7 @@ class ParseLogFile:
         else:
             sortedList = sorted(values.items(), key=operator.itemgetter(1))
         sortedValues = collections.OrderedDict(sortedList)
-        if self.verbose is True: print "In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(sortedValues)
+        if self.verbose is True: print "[DEBUG] In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(sortedValues)
         return sortedValues
 
     def getColumnUniqueValuesByColumn(self, column, uniqueColumn):
@@ -317,5 +319,5 @@ class ParseLogFile:
             except IndexError as e:
                 print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
                 exit()
-        # if self.verbose is True: print "In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(values)
+        # if self.verbose is True: print "[DEBUG] In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(values)
         return values
