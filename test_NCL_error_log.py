@@ -11,7 +11,7 @@ print "1: %s \'File does not exist\' errors." % errors
 assert errors == 65119
 
 # Question 2
-count = len(logfile.getColumnUniqueValuesSorted(7))
+count = len(logfile.getColumnUniqueValues(7))
 print "2: Unique IP addresses: %s" % count
 assert count == 8121
 

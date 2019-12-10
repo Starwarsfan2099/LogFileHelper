@@ -15,11 +15,11 @@ assert logfile.countOccurrences("the") == 7
 
 assert logfile.addByColumn(4) == 4988
 
-assert logfile.getColumnUniqueValuesSorted(4, largestFirst=True)[0] == 4798
+assert logfile.getColumnUniqueValuesSortedInt(4, largestFirst=True)[0] == 4798
 
-assert logfile.getColumnUniqueValuesSorted(4)[0] == 0
+assert logfile.getColumnUniqueValuesSortedInt(4)[0] == 0
 
-assert logfile.getColumnUniqueValuesSorted(4) == [0, 1, 4, 5, 8, 12, 34, 59, 67, 4798]
+assert logfile.getColumnUniqueValuesSortedInt(4) == [0, 1, 4, 5, 8, 12, 34, 59, 67, 4798]
 
 assert logfile.addByColumnWithString(4, "the") == 4936
 

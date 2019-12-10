@@ -200,8 +200,8 @@ class ParseLogFile:
         if self.verbose is True: print "[DEBUG] Column %d added for lines with unique column %d value: " % (column, uniqueColumn) + str(sortedValues)
         return sortedValues
 
-    def getColumnUniqueValuesSorted(self, column, largestFirst=False):
-        # This method gets all of the unique values in a column and sorts them. Default sorts from smallest to largest.
+    def getColumnUniqueValues(self, column):
+        # This method gets all of the unique values in a column.
         # Arguments:
         #   column          INT         Column number in the line.
         #   largestFirst    BOOL        Sort by the largest number first.
@@ -216,6 +216,31 @@ class ParseLogFile:
             line = line.split()
             try:
                 nextValue = line[column]
+                counter += 1
+            except IndexError as e:
+                print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
+                exit()
+            if nextValue not in values:
+                values.append(nextValue)
+        if self.verbose is True: print "[DEBUG] Column %d values sorted: " % column + str(values)
+        return values
+
+    def getColumnUniqueValuesSortedInt(self, column, largestFirst=False):
+        # This method gets all of the unique values in a column and sorts them. Default sorts from smallest to largest. Works on intiger items in the column.
+        # Arguments:
+        #   column          INT         Column number in the line.
+        #   largestFirst    BOOL        Sort by the largest number first.
+        # Returns:
+        #   values          LIST        List containing all unique column values sorted.
+        self.logfile.seek(0)
+        values = []
+        counter = 0
+        s = ""
+        nextValue = 0
+        for line in self.logfile:
+            line = line.split()
+            try:
+                nextValue = int(line[column])
                 counter += 1
             except IndexError as e:
                 print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
