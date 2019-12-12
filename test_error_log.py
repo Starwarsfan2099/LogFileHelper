@@ -1,3 +1,4 @@
+# File to test the functionality against a real log
 import LogFileHelper
 
 fileName = "error_log.txt"
