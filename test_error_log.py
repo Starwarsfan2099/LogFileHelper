@@ -1,5 +1,8 @@
 # File to test the functionality against a real log
 import LogFileHelper
+import time
+
+start_time = time.time()
 
 fileName = "error_log.txt"
 verbose = False
@@ -32,3 +35,5 @@ assert mostUniqueFiles == "176.53.21.162"
 count = logfile.countUniqueOccurrencesByLineIfColumn("File does not exist", 7, mostUniqueFiles, 12)
 print "5: Unique file/directory requests from %s that yielded a \'Does not exists\' error: %s" % (mostUniqueFiles, count)
 assert count == 1559
+
+print "Done is %s seconds." % (time.time() - start_time)
