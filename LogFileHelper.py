@@ -1,4 +1,4 @@
-# Created by AJ CLark on 10/21/2019
+# Created by AJ Clark on 10/21/2019
 
 import re
 import operator
