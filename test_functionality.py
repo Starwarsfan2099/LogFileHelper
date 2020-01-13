@@ -5,7 +5,7 @@ import time
 start_time = time.time()
 
 fileName = "test_log.txt"
-verbose = True
+verbose = False
 
 logfile = LogFileHelper.ParseLogFile(fileName, verbose=verbose)
 

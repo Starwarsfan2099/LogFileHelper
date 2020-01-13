@@ -344,5 +344,5 @@ class ParseLogFile:
             except IndexError as e:
                 print "Error, tried to read from column %s on line \'%s\'(line %d)." % (column, s.join(line), counter)
                 exit()
-        # if self.verbose is True: print "[DEBUG] In lines with \'%s\' in column %d, unique values in column %d were: " % (string, column, uniqueColumn) + str(values)
+        if self.verbose is True: print "[DEBUG] In lines with column %d, unique values in column %d were: " % (column, uniqueColumn) + str(values)
         return values
